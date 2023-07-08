@@ -1,0 +1,75 @@
+<html>
+
+<head>
+<link rel="stylesheet" href="papel.css">
+</head>
+<body>
+<canvas id="lienzo" width="500" height="500"></canvas>
+<button id="boton-borrar">Borrar Lienzo</button>
+<script>
+// Obtener el elemento de lienzo y su contexto
+const lienzo = document.getElementById("lienzo");
+const ctx = lienzo.getContext("2d");
+
+// Variables para almacenar la posición del mouse
+let dibujando = false;
+let x = 0;
+let y = 0;
+
+// Función para iniciar el dibujo
+function comenzarDibujo(event) {
+  dibujando = true;
+  x = event.clientX - lienzo.offsetLeft;
+  y = event.clientY - lienzo.offsetTop;
+  lienzo.classList.add("dibujando"); // Agregar la clase CSS "dibujando" al lienzo
+}
+
+// Función para dibujar
+function dibujar(event) {
+  if (dibujando) {
+    // Configurar el estilo de dibujo
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 5;
+    ctx.lineJoin = "round";
+    ctx.lineCap = "round";
+
+    // Dibujar una línea desde la posición anterior hasta la actual
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    x = event.clientX - lienzo.offsetLeft;
+    y = event.clientY - lienzo.offsetTop;
+    ctx.lineTo(x, y);
+    ctx.stroke();
+  }
+}
+
+// Función para detener el dibujo
+function detenerDibujo() {
+  dibujando = false;
+  lienzo.classList.remove("dibujando"); // Remover la clase CSS "dibujando" del lienzo
+}
+
+// Agregar eventos de mouse al lienzo
+lienzo.addEventListener("mousedown", comenzarDibujo);
+lienzo.addEventListener("mousemove", dibujar);
+lienzo.addEventListener("mouseup", detenerDibujo);
+lienzo.addEventListener("mouseout", detenerDibujo);
+lienzo.addEventListener("mouseover", function() {
+  if (!dibujando) {
+    lienzo.classList.add("dibujando"); // Agregar la clase CSS "dibujando" al lienzo al pasar el mouse sobre él
+  }
+});
+
+</script>
+<script>
+function borrarLienzo() {
+  ctx.clearRect(0, 0, lienzo.width, lienzo.height);
+}
+
+// Agregar evento de clic al botón de borrar
+const botonBorrar = document.getElementById("boton-borrar");
+botonBorrar.addEventListener("click", borrarLienzo);
+
+</script>
+</body>
+</html>

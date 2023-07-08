@@ -1,0 +1,7 @@
+#lienzo {
+  cursor: default;
+}
+
+#lienzo.dibujando {
+  cursor: url(pencil.cur), auto;
+}
